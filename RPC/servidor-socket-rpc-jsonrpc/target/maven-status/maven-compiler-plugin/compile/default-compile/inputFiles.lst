@@ -1,0 +1,9 @@
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/Main.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcError.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcRequest.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcResponse.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/server/Server.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/BaskaraService.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/PalavrasService.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/PiService.java
+/home/querley/Projects/Senai_2026_ADS_DSD/RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/ServiceInterface.java

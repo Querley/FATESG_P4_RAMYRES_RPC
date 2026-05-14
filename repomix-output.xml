@@ -1,0 +1,1050 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+RPC/
+  cliente-socket-rpc-jsonrpc/
+    src/
+      main/
+        java/
+          com/
+            ramyres/
+              model/
+                EstatisticaDoTexto.java
+                Raizes.java
+              protocolo/
+                JsonRpcError.java
+                JsonRpcRequest.java
+                JsonRpcResponse.java
+              servicos/
+                BaskaraService.java
+                PalavrasService.java
+                PiService.java
+              stub/
+                ClienteRpc.java
+              ui/
+                tui/
+                  UserInterfaceTui.java
+              Main.java
+    pom.xml
+    README.md
+  servidor-socket-rpc-jsonrpc/
+    src/
+      main/
+        java/
+          com/
+            ramyres/
+              protocolo/
+                JsonRpcError.java
+                JsonRpcRequest.java
+                JsonRpcResponse.java
+              server/
+                Server.java
+              servicos/
+                BaskaraService.java
+                PalavrasService.java
+                PiService.java
+                ServiceInterface.java
+              Main.java
+      test/
+        java/
+          server/
+            MainTest.java
+          servicos/
+            BaskaraServiceTest.java
+            PalavrasServiceTest.java
+            PiServiceTest.java
+    pom.xml
+    README.md
+.gitignore
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/model/EstatisticaDoTexto.java">
+package com.ramyres.model;
+
+public class EstatisticaDoTexto 
+{
+    public int qtdLetras;
+    public int qtdPalavras;
+    public int qtdVogal;
+    public int qtdVogalAcentuada;
+    public int qtdConsoantes;
+    public int qtdEspacos;
+    public int qtdPalavrasPar;
+    public int qtdPalavrasImpar;
+    public int qtdDeLinhas;
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/model/Raizes.java">
+package com.ramyres.model;
+
+public class Raizes {
+    public boolean temRaizesReais;
+    public double raiz1;
+    public double raiz2;
+
+    public String toString() {
+        if (!temRaizesReais) {
+            return "A equação não possui raízes reais.";
+        } else if (raiz1 == raiz2) {
+            return "A equação possui uma raiz real: " + raiz1;
+        } else {
+            return "A equação possui duas raízes reais: " + raiz1 + " e " + raiz2;
+        }
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcError.java">
+package com.ramyres.protocolo;
+public class JsonRpcError{
+    // {"code": -32600, "message": "Invalid Request"},
+    public int code;
+    public String message;
+
+    public JsonRpcError() {
+    }
+
+    public JsonRpcError(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcRequest.java">
+package com.ramyres.protocolo;
+
+public class JsonRpcRequest {
+    //{"jsonrpc": "2.0", "method": "subtract", "params": [42, 23], "id": 3}
+    public long id;
+    public String jsonRpc;
+    public String method;
+    public String[] params;
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcResponse.java">
+package com.ramyres.protocolo;
+
+public class JsonRpcResponse {
+    // "jsonrpc": "2.0", "result": 19, "id": 1}
+    public long id;
+    public String jsonRpc;
+    public Object result;
+    public JsonRpcError error;
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/BaskaraService.java">
+package com.ramyres.servicos;
+
+import com.ramyres.model.Raizes;
+import com.ramyres.stub.ClienteRpc;
+
+public class BaskaraService {
+    public Raizes CalcularRaizes(double a, double b, double c) {
+        String[] params = new String[]{ String.valueOf(a), String.valueOf(b), String.valueOf(c) };
+        String[] results = ClienteRpc.executar("baskara", params);
+        
+        Raizes raizes = new Raizes();
+        if(results.length > 0) {
+            raizes.temRaizesReais = true;
+            raizes.raiz1 = Double.parseDouble(results[0]);
+            if (results.length > 1) {
+                raizes.raiz2 = Double.parseDouble(results[1]);
+            }
+            return raizes;
+        }
+        raizes.temRaizesReais = false;
+        return raizes;
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/PalavrasService.java">
+package com.ramyres.servicos;
+
+import com.ramyres.model.EstatisticaDoTexto;
+import com.ramyres.stub.ClienteRpc;
+
+public class PalavrasService {
+    public EstatisticaDoTexto ObterEstatistica(String texto) {
+        String[] results = ClienteRpc.executar("palavras", new String[]{ texto });
+        EstatisticaDoTexto estatistica = new EstatisticaDoTexto();
+        if (results.length == 9) {
+            estatistica.qtdLetras = Integer.parseInt(results[0]);
+            estatistica.qtdPalavras = Integer.parseInt(results[1]);
+            estatistica.qtdVogal = Integer.parseInt(results[2]);
+            estatistica.qtdVogalAcentuada = Integer.parseInt(results[3]);
+            estatistica.qtdConsoantes = Integer.parseInt(results[4]);
+            estatistica.qtdEspacos = Integer.parseInt(results[5]);
+            estatistica.qtdPalavrasPar = Integer.parseInt(results[6]);
+            estatistica.qtdPalavrasImpar = Integer.parseInt(results[7]);
+            estatistica.qtdDeLinhas = Integer.parseInt(results[8]);
+        }
+        return estatistica;
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/PiService.java">
+package com.ramyres.servicos;
+
+import java.math.BigDecimal;
+
+import com.ramyres.stub.ClienteRpc;
+
+public class PiService {
+    public BigDecimal CalcularPi(long termos) {
+        String[] params = new String[]{ String.valueOf(termos) };
+        String[] results = ClienteRpc.executar("pi", params);
+        if(results.length > 0) {
+            return new BigDecimal(results[0]);
+        }
+        return new BigDecimal("0.0");
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/stub/ClienteRpc.java">
+package com.ramyres.stub;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.ramyres.protocolo.JsonRpcRequest;
+import com.ramyres.protocolo.JsonRpcResponse;
+
+public class ClienteRpc {
+    private static Socket socket;
+
+    public static String enviar(String req) {
+        if (socket == null || socket.isClosed()) {
+            try {
+                socket = new Socket("localhost", 7654);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        try {
+            PrintWriter saida = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            saida.println(req);
+
+            String resposta;
+            while((resposta = entrada.readLine()) != null){
+                return resposta;
+            }
+            return "";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                socket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String[] executar(String method, String[] params) {
+        JsonRpcRequest req = new JsonRpcRequest();
+        req.id = System.currentTimeMillis();
+        req.jsonRpc = "2.0";
+        req.method = method;
+        req.params = params;
+
+        Gson gson = new Gson();
+        String reqJson = gson.toJson(req);
+        String resJson = enviar(reqJson);
+
+        JsonRpcResponse res = gson.fromJson(resJson, JsonRpcResponse.class);
+        if (res.error != null) {
+            System.err.println("Erro: " + res.error.code + " - " + res.error.message);
+            throw new RuntimeException("Erro na execução do método: " + res.error.message);
+        }
+
+        ArrayList<String> resultados = (ArrayList<String>) res.result;
+        return resultados.toArray(new String[0]);
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/ui/tui/UserInterfaceTui.java">
+package com.ramyres.ui.tui;
+
+import java.util.Scanner;
+
+import com.ramyres.servicos.BaskaraService;
+import com.ramyres.servicos.PiService;
+
+public class UserInterfaceTui {
+
+    private void showMenu() {
+        System.out.println("Menu:");
+        System.out.println("1. Calcular Pi com casas decimais");
+        System.out.println("2. Calcular Raízes de uma Equação Quadrática");
+        System.out.println("3. Estatísticas de um texto");
+        System.out.println("0. Sair");
+    }
+
+    private void callPiService(Scanner scanner) {
+        System.out.println("Informe a quantidade de casas decimais para Pi:");
+        long casasDecimais = scanner.nextLong();
+
+        System.out.println("Calculando Pi com " + casasDecimais + " casas decimais...");
+        
+        PiService piService = new PiService();
+        
+        var result = piService.CalcularPi(casasDecimais);
+        System.out.println("Resultado: " + result.toString());
+    }
+
+    private void callBaskaraService(Scanner scanner) {
+        System.out.println("Informe os coeficientes a, b e c da equação quadrática (ax^2 + bx + c = 0):");
+        System.out.print("a: ");
+        double a = scanner.nextDouble();
+        System.out.print("b: ");
+        double b = scanner.nextDouble();
+        System.out.print("c: ");
+        double c = scanner.nextDouble();
+
+        System.out.println("Calculando as raízes da equação...");
+        
+        BaskaraService baskaraService = new BaskaraService();
+        
+        var result = baskaraService.CalcularRaizes(a, b, c);
+        System.out.println("Resultado: " + result.toString());
+    }
+
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Bem-vindo ao cliente de RPC!");
+        while (true) {
+            showMenu();
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    callPiService(scanner);
+                    break;
+                case 2:
+                    callBaskaraService(scanner);
+                    break;
+                case 3:
+                    // Call the text statistics method
+                    break;
+                case 0:
+                    System.out.println("Saindo...");
+                    return;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/src/main/java/com/ramyres/Main.java">
+package com.ramyres;
+
+import com.ramyres.ui.tui.UserInterfaceTui;
+
+public class Main {
+
+    public static void main(String[] args) {
+        new UserInterfaceTui().start();
+    }
+}
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/pom.xml">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ramyres</groupId>
+    <artifactId>cliente-socket-rpc-jsonrpc</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.13.2</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <!-- Defina a sua classe principal aqui -->
+                            <mainClass>com.ramyres.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
+</file>
+
+<file path="RPC/cliente-socket-rpc-jsonrpc/README.md">
+# Cliente Socker RPC com JsonRPC
+
+* Aplicação de terminal com as funcionalidades
+- Calculo de raizes
+- Calculo das casas decimais de PI
+- Estatísticas de um texto
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcRequest.java">
+package com.ramyres.protocolo;
+
+public class JsonRpcRequest {
+    //{"jsonrpc": "2.0", "method": "subtract", "params": [42, 23], "id": 3}
+    public long id;
+    public String jsonRpc;
+    public String method;
+    public String[] params;
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/ServiceInterface.java">
+package com.ramyres.servicos;
+
+public interface ServiceInterface {
+    String[] Run(String[] params);
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/test/java/server/MainTest.java">
+package server;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.gson.Gson;
+import com.ramyres.protocolo.JsonRpcResponse;
+import com.ramyres.server.Server;
+
+public class MainTest {
+    @Test
+    public void testHandleRequestBaskara() {
+        Server server = new Server();
+        String request = "{\"jsonrpc\": \"2.0\", \"method\": \"baskara\", \"params\": [\"1\", \"-3\", \"2\"], \"id\": 99}";
+        String response = server.handleRequest(request);
+        assert !response.isEmpty();
+        assert response.contains("\"result\"");
+        assert response.contains("\"id\":");
+        
+        Gson gson = new Gson();
+        JsonRpcResponse rpcResponse = gson.fromJson(response, JsonRpcResponse.class);
+        assert rpcResponse.result != null;
+        assert rpcResponse.error == null;
+        assert rpcResponse.id == 99;
+
+        ArrayList<String> resultados = (ArrayList<String>) rpcResponse.result;
+        assert resultados.size() == 2;
+        assert resultados.get(0).equals("2.0");
+        assert resultados.get(1).equals("1.0");
+    }
+
+    @Test
+    public void testHandleRequestPalavras(){
+        Server server = new Server();
+        String request = "{\"jsonrpc\": \"2.0\", \"method\": \"palavras\", \"params\": [\"A vingança nunca é plena, mata a alma e envenena.\"], \"id\": 42}";
+        String response = server.handleRequest(request);
+        assert !response.isEmpty();
+        assert response.contains("\"result\"");
+        assert response.contains("\"id\":");
+        
+        Gson gson = new Gson();
+        JsonRpcResponse rpcResponse = gson.fromJson(response, JsonRpcResponse.class);
+        assert rpcResponse.result != null;
+        assert rpcResponse.error == null;
+        assert rpcResponse.id == 42;
+
+        ArrayList<String> resultados = (ArrayList<String>) rpcResponse.result;
+        assert resultados.size() == 9;
+        assert resultados.get(0).equals("38"); // qtdLetras
+        assert resultados.get(1).equals("10"); // qtdPalavras
+        assert resultados.get(2).equals("18"); // qtdVogal
+        assert resultados.get(3).equals("1"); // qtdVogalAcentuada
+        assert resultados.get(4).equals("19"); // qtdConsoantes
+        assert resultados.get(5).equals("9"); // qtdEspacos
+        assert resultados.get(6).equals("4"); // qtdPalavrasPar
+        assert resultados.get(7).equals("6"); // qtdPalavrasImpar
+        assert resultados.get(8).equals("1"); // qtdDeLinhas
+    }
+
+    @Test
+    public void testHandleRequestPi() {
+        Server server = new Server();
+        String request = "{\"jsonrpc\": \"2.0\", \"method\": \"pi\", \"params\": [\"15\"], \"id\": 123}";
+        String response = server.handleRequest(request);
+        assert !response.isEmpty();
+        assert response.contains("\"result\"");
+        assert response.contains("\"id\"");
+
+        Gson gson = new Gson();
+        JsonRpcResponse rpcResponse = gson.fromJson(response, JsonRpcResponse.class);
+        assert rpcResponse.result != null;
+        assert rpcResponse.error == null;
+        assert rpcResponse.id == 123;
+    }
+
+    @Test
+    public void testHandleRequestInvalidMethod() {  
+        com.ramyres.server.Server server = new com.ramyres.server.Server();
+        String request = "{\"jsonrpc\": \"2.0\", \"method\": \"invalidMethod\", \"params\": [], \"id\": 36}";
+        String response = server.handleRequest(request);
+        
+        assert response.contains("\"result\"");
+        assert response.contains("\"id\"");
+        assert response.contains("\"error\"");
+
+        Gson gson = new Gson();
+        JsonRpcResponse rpcResponse = gson.fromJson(response, JsonRpcResponse.class);
+        assert rpcResponse.result != null;
+        assert rpcResponse.error != null;
+        assert rpcResponse.id == 36;
+        assert rpcResponse.error.code == -32601;
+        assert rpcResponse.error.message.contains("Method not found");
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/test/java/servicos/BaskaraServiceTest.java">
+package servicos;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import com.ramyres.servicos.BaskaraService;
+
+public class BaskaraServiceTest {
+    @Test
+    public void testCalcularRaizes() {
+        BaskaraService service = new BaskaraService();
+        
+        // Teste com delta positivo
+        String[] params1 = {"1", "-3", "2"};
+        String[] resultado1 = service.Run(params1);
+        assert resultado1.length == 2;
+        assert resultado1[0].equals("2.0");
+        assert resultado1[1].equals("1.0");
+        
+        // Teste com delta zero
+        String[] params2 = {"1", "-2", "1"};
+        String[] resultado2 = service.Run(params2);
+        assert resultado2.length == 1;
+        assert resultado2[0].equals("1.0");
+        
+        // Teste com delta negativo
+        String[] params3 = {"1", "0", "1"};
+        String[] resultado3 = service.Run(params3);
+        assert resultado3.length == 0;
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/test/java/servicos/PalavrasServiceTest.java">
+package servicos;
+
+import org.junit.jupiter.api.Test;
+
+import com.ramyres.servicos.PalavrasService;
+
+public class PalavrasServiceTest {
+    @Test
+    public void testContarLetras() {
+        PalavrasService service = new PalavrasService();
+        String[] params = {"A vingança nunca é plena, mata a alma e envenena."};
+        String[] resultado = service.Run(params);
+        assert resultado.length == 9;
+        
+        assert resultado[0].equals("38"); // qtdLetras
+        assert resultado[1].equals("10"); // qtdPalavras
+        assert resultado[2].equals("18"); // qtdVogal
+        assert resultado[3].equals("1"); // qtdVogalAcentuada
+        assert resultado[4].equals("19"); // qtdConsoantes
+        assert resultado[5].equals("9"); // qtdEspacos
+        assert resultado[6].equals("4"); // qtdPalavrasPar
+        assert resultado[7].equals("6"); // qtdPalavrasImpar
+        assert resultado[8].equals("1"); // qtdDeLinhas
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/test/java/servicos/PiServiceTest.java">
+package servicos;
+
+import org.junit.jupiter.api.Test;
+
+import com.ramyres.servicos.PiService;
+
+public class PiServiceTest {
+    @Test
+    public void testCalcularPi() {
+        int qtdCasas = 15;
+        PiService service = new PiService();
+        String[] params = {String.valueOf(qtdCasas)};
+        String[] resultado = service.Run(params);
+        assert resultado.length == 1;
+        assert resultado[0] != null;
+        assert resultado[0].matches("\\d+(\\.\\d+)?"); // Verifica se o resultado é um número
+        assert resultado[0].length() > 0; // Verifica se o resultado não é vazio
+        assert resultado[0].length() > qtdCasas; // Verifica se o resultado não é vazio
+
+        double piCalculado = Double.parseDouble(resultado[0]);
+        double piReal = Math.PI;
+        double delta = Math.abs(piCalculado - piReal);
+        assert delta < 0.001; // Verifica se o valor calculado está próximo de PI
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/README.md">
+# Servidor Socker RPC com JsonRPC
+
+## Procedimentos
+
+1. Baskara
+    - Definição: Realizar o calculo das raízes utilizando a formula de Báskara, verificando se existe raiz, se existe apenas uma(x) ou duas (x1,x2).
+    - Entrada: [a,b,c]
+    - Saídas: [] || [x] || [x1, x2]
+
+
+1. Palavras
+    - Definição: Realizar a estatística de um texto enviado, retornando as informações quantidade de palavras, quantidade de vogais (sem acento), quantidade de vogais acentuadas, quantidade de consoantes, quantidade de espaços, quantidade de palavras pares, quantidade de palavras impares e quantidade de linhas. 
+    - Entrada: [texto]
+    - Saída: [qtdLetras, qtdPalavras, qtdVogal, qtdVogalAcentuada, qtdConsoantes, qtdEspacos, qtdPalavrasPar, qtdPalavrasImpar, qtdDeLinhas]
+
+1. PI
+    - Definição: Realizar o calculo do valor de PI com precisão informada. Ex: qtdCasas = 5, deve retornar 3.14159.
+    - Entrada: [qtdCasas]
+    - Saída: [piComQtdCasasInformada]
+
+## Scripts Maven
+
+* `mvn install`: Instalação das dependências.
+* `mvn compile`: Para compilar o projeto.
+* `mvn package`: Para empacotar e gerar o .jar
+* `mvn test`: Para executar os testes.
+* `mvn clean`: Para apagar os arquivos compilados.
+
+*Obs: Utilize _-DskipTests_ para pular os testes.
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcError.java">
+package com.ramyres.protocolo;
+public class JsonRpcError{
+    // {"code": -32600, "message": "Invalid Request"},
+    public int code;
+    public String message;
+
+    public JsonRpcError() {
+    }
+
+    public JsonRpcError(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/protocolo/JsonRpcResponse.java">
+package com.ramyres.protocolo;
+
+public class JsonRpcResponse {
+    // "jsonrpc": "2.0", "result": 19, "id": 1}
+    public long id;
+    public String jsonRpc;
+    public Object result;
+    public JsonRpcError error;
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/BaskaraService.java">
+package com.ramyres.servicos;
+
+public class BaskaraService implements ServiceInterface {
+
+    private double[] CalcularRaizes(double a, double b, double c) {
+        double delta = b * b - 4 * a * c;
+        if (delta < 0) {
+            return new double[] {};
+        } 
+        
+        if (delta == 0) {
+            double raiz = -b / (2 * a);
+            return new double[] {raiz};
+        }
+
+        double raiz1 = (-b + Math.sqrt(delta)) / (2 * a);
+        double raiz2 = (-b - Math.sqrt(delta)) / (2 * a);
+        return new double[] {raiz1, raiz2};
+    }
+
+    @Override
+    public String[] Run(String[] params) {
+        if(params.length != 3) {
+            throw new IllegalArgumentException("Parâmetros inválidos. Esperado: a, b, c");
+        }
+        double a = Double.parseDouble(params[0]);
+        double b = Double.parseDouble(params[1]);
+        double c = Double.parseDouble(params[2]);
+        
+        double[] resultados = CalcularRaizes(a, b, c);
+        
+        String[] resposta = new String[resultados.length];
+        
+        for (int i = 0; i < resultados.length; i++) {
+            resposta[i] = String.valueOf(resultados[i]);
+        }
+
+        return resposta;
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/PalavrasService.java">
+package com.ramyres.servicos;
+
+public class PalavrasService implements ServiceInterface {
+
+    @Override
+    public String[] Run(String[] params) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'Run'");
+        //[qtdLetras, qtdPalavras, qtdVogal, qtdVogalAcentuada, qtdConsoantes, qtdEspacos, qtdPalavrasPar, qtdPalavrasImpar, qtdDeLinhas ]
+        return new String[]{
+            "38",
+            "10",
+            "18",
+            "1",
+            "19",
+            "9",
+            "4",
+            "6",
+            "1"
+        };
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/Main.java">
+package com.ramyres;
+
+import com.ramyres.server.Server;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            int port = 7654;
+            System.out.println("Executando servidor na porta "+port);
+            new Server().Run(port);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+}
+</file>
+
+<file path=".gitignore">
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+.vscode/
+target/
+</file>
+
+<file path="README.md">
+# Senai Fatesg
+Repo para compartilhar os códigos e projetos ministrados em sala de aula para o curso de ADS 4º Período 2026-1
+
+- 2026
+  * ADS
+    - DSD
+      * Gerenciamento de pacotes com Maven (serializejson)
+      * Threads em java (cozinha)
+      * Treads em java com sincronismo (viaceploading)
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/server/Server.java">
+package com.ramyres.server;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import com.google.gson.Gson;
+
+import com.ramyres.protocolo.JsonRpcError;
+import com.ramyres.protocolo.JsonRpcRequest;
+import com.ramyres.protocolo.JsonRpcResponse;
+import com.ramyres.servicos.BaskaraService;
+import com.ramyres.servicos.PalavrasService;
+
+public class Server {
+    public void Run(int port) throws IOException {
+        ServerSocket ss = new ServerSocket(port);
+        while (true) {
+            Socket clientSocket = ss.accept();
+            new Thread(() -> handleClient(clientSocket)).start();
+        }
+    }
+
+    private void handleClient(Socket socket) {
+        try (
+            Socket s = socket; 
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            PrintWriter saida = new PrintWriter(s.getOutputStream(), true)
+        ) {
+            String request = entrada.readLine();
+            if (request != null) {
+                String response = handleRequest(request);
+                saida.println(response);
+                s.close();
+            }
+        }
+        catch(IOException e){
+            System.err.println("Erro ao comunicar com o cliente: " + e.getMessage());
+        }
+    }
+
+    public String handleRequest(String request) {
+        Gson gson = new Gson();
+        
+        try {
+            JsonRpcRequest rpcRequest = gson.fromJson(request, JsonRpcRequest.class);
+            
+            String method = rpcRequest.method;
+            String[] params = rpcRequest.params;
+            
+            JsonRpcResponse rpcResponse = new JsonRpcResponse();
+            rpcResponse.id = rpcRequest.id;
+            rpcResponse.result = new String[0]; // Valor padrão para o resultado
+
+            switch (method) {
+                case "baskara":
+                    String [] auxB = new BaskaraService().Run(params);
+                    rpcResponse.result = auxB;
+                    break;
+                case "palavras":
+                    String [] auxP = new PalavrasService().Run(params);
+                    rpcResponse.result = auxP;
+                    break;
+                default:
+                    rpcResponse.error = new JsonRpcError(-32601, "Method not found: " + method);
+                    break;
+            }
+            
+            return gson.toJson(rpcResponse);
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            JsonRpcResponse rpcResponse = new JsonRpcResponse();
+            rpcResponse.error = new JsonRpcError(){
+                {
+                    code = -32603;
+                    message = "Internal error: " + e.getMessage();
+                }
+            };            
+            return gson.toJson(rpcResponse);
+        }   
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/src/main/java/com/ramyres/servicos/PiService.java">
+package com.ramyres.servicos;
+
+/*
+Pesquise sobre os metodos e escolha um
+    * Método de Arquimedes
+    * Método de Chudnovsky
+    * Método de Leibniz
+    * Método de Machin
+*/
+public class PiService implements ServiceInterface {
+    @Override
+    public String[] Run(String[] params) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'Run'");
+        return new String[]{ "3.141592653589793" };
+    }
+}
+</file>
+
+<file path="RPC/servidor-socket-rpc-jsonrpc/pom.xml">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ramyres</groupId>
+    <artifactId>servidor-socket-rpc-jsonrpc</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.13.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>6.0.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <!-- Defina a sua classe principal aqui -->
+                            <mainClass>com.ramyres.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+</file>
+
+</files>
